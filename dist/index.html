@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#102a33">
+<meta name="description" content="驾驶787探索海岛上空，练习起飞、穿越航点与降落。支持键盘和触屏的三维飞行游戏。">
+<title>787 飞行俱乐部</title>
+<link rel="icon" href="./favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<main id="game">
+  <div id="scene" role="img" aria-label="787飞机、海岛机场与飞行航点的实时三维画面"></div>
+  <div id="loading" class="loading"><span class="loader"></span><strong>正在准备机库</strong><span>787 FLIGHT CLUB</span></div>
+  <div class="vignette" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="#" id="home" aria-label="返回飞行俱乐部主菜单"><span class="brand-icon">↗</span><span><b>787</b> <span class="brand-name">FLIGHT CLUB</span></span></a>
+    <div id="flight-label" class="flight-label">海岛飞行 · 09 跑道</div>
+    <div class="top-actions">
+      <button id="sound" class="tool" type="button" aria-pressed="false" aria-label="开启声音">声音 关</button>
+      <button id="help" class="tool" type="button">操作指南</button>
+      <button id="fullscreen" class="tool" type="button" aria-label="全屏">⛶</button>
+    </div>
+  </header>
+  <section id="menu" class="menu">
+    <div class="eyebrow"><span class="status-dot"></span> READY FOR DEPARTURE</div>
+    <h1>下一站，<br><span>天空。</span></h1>
+    <p class="intro">驾驶你的 787，掠过海岸与群山。<br>从跑道出发，开启一段属于你的飞行。</p>
+    <div class="menu-buttons"><button class="button primary" data-start="runway" type="button">跑道起飞 <span>↗</span></button><button class="button secondary" data-start="air" type="button">直接进入空中</button></div>
+    <div class="mission-preview"><span>本次航程</span><p>起飞 <i>→</i> 10 个航点 <i>→</i> 返回机场</p></div>
+    <div class="key-preview"><span><kbd>W</kbd><kbd>S</kbd> 俯仰</span><span><kbd>A</kbd><kbd>D</kbd> 转弯</span><span><kbd>Shift</kbd> 加油门</span></div>
+    <p class="menu-note">街机飞行 · 自动回正辅助 · 支持触屏</p>
+  </section>
+  <div id="menu-footer" class="menu-footer"><span>BOEING 787-9 / DREAMLINER</span><span>海岛机场 · 晴朗</span></div>
+  <section id="hud" hidden aria-label="飞行仪表">
+    <div class="mission-strip"><span id="mission-kicker">飞行任务</span><strong id="mission-title">加油门，开始滑跑</strong><span id="mission-count">00 / 10</span><div class="mission-progress"><i id="mission-bar"></i></div></div>
+    <div class="readout speed"><span class="instrument-label">空速 <small>KT</small></span><strong id="airspeed">000</strong><span id="speed-note" class="readout-note">等待起飞</span><div class="speed-ticks" aria-hidden="true"></div></div>
+    <div class="readout altitude"><span class="instrument-label">离地高度 <small>M</small></span><strong id="altitude">000</strong><span class="readout-note">垂直速度 <b id="vertical-speed">+0.0</b> m/s</span><div class="speed-ticks" aria-hidden="true"></div></div>
+    <div id="heading" class="heading"><span>HDG</span><strong id="heading-value">090°</strong><i>▼</i></div>
+    <div class="reticle" aria-hidden="true"><span></span><i></i><span></span></div>
+    <div id="gate-label" class="gate-label"><span class="gate-diamond">◇</span><b id="gate-number">01</b><span id="gate-distance">1.2 km</span></div>
+    <div id="direction-cue" class="direction-cue" hidden><span id="cue-arrow">↑</span><span id="cue-label">航点在前方</span></div>
+    <div id="notice" class="notice" role="status" aria-live="polite"></div>
+    <div class="lower-left">
+      <div class="throttle-panel"><label for="throttle">油门 <output id="throttle-value">15%</output></label><input type="range" id="throttle" min="0" max="100" value="15" aria-label="油门百分比"><span class="throttle-keys">SHIFT ＋ / X −</span></div>
+      <div class="configuration"><button id="gear" type="button" aria-pressed="true">起落架 <b>放下</b><kbd>G</kbd></button><button id="flaps" type="button" aria-pressed="false">襟翼 <b>收起</b><kbd>F</kbd></button><button id="brake" type="button" aria-pressed="false">刹车<kbd>空格</kbd></button></div>
+    </div>
+    <div class="bottom-center">
+      <div class="attitude" aria-label="姿态仪"><div id="attitude-world"><div class="sky-half"></div><div class="ground-half"></div><div class="horizon-line"></div><div class="pitch-lines"><i></i><i></i><i></i></div></div><span class="attitude-marker">— • —</span></div>
+      <div class="flight-actions"><button id="view" type="button">追踪视角 <kbd>C</kbd></button><button id="pause" type="button">暂停 <kbd>P</kbd></button></div>
+    </div>
+    <div class="map-panel"><div class="map-caption"><span>航路</span><span id="elapsed">00:00</span></div><canvas id="map" width="220" height="164" aria-label="显示飞机位置、航点和机场的导航地图"></canvas><div class="map-footer"><span id="map-range">范围 12 km</span><span>N ↑</span></div></div>
+    <div class="touch-pad" id="touch-pad" aria-label="触控飞行摇杆"><span class="pad-axis horizontal"></span><span class="pad-axis vertical"></span><span id="stick"></span><small>俯仰 / 转弯</small></div>
+  </section>
+  <section id="overlay" class="overlay" hidden aria-labelledby="overlay-title">
+    <div class="overlay-card"><span id="overlay-eyebrow" class="eyebrow">FLIGHT PAUSED</span><h2 id="overlay-title">稍作停留</h2><p id="overlay-body">天空会等你回来。</p><div id="result-stats" class="result-stats" hidden></div><div class="overlay-buttons"><button id="resume" class="button primary" type="button">继续飞行</button><button id="restart" class="button secondary" type="button">重新开始</button><button id="back-menu" class="text-button" type="button">返回主菜单</button></div></div>
+  </section>
+  <dialog id="guide"><div class="dialog-top"><span class="eyebrow">PILOT BRIEFING</span><button id="close-guide" class="tool" aria-label="关闭操作指南" type="button">✕</button></div><h2>你的第一次飞行</h2><div class="guide-steps"><p><b>01 · 起飞</b>按住 Shift 加油门。空速超过 135 KT 后，按 W 或 ↑ 抬头。离地后按 G 收起起落架。</p><p><b>02 · 飞行</b>W / S 或 ↑ / ↓ 控制抬头与低头，A / D 或 ← / → 控制转弯。松开按键会逐渐回正，穿过发光圆环推进任务。</p><p><b>03 · 降落</b>返回 09 跑道，X 减油门，G 放下起落架，F 放襟翼。保持约 130–180 KT、下降率小于 6 m/s，平稳接地后按空格刹车。</p></div><div class="key-grid"><span><kbd>Q</kbd> / <kbd>E</kbd> 方向舵</span><span><kbd>C</kbd> 切换视角</span><span><kbd>P</kbd> / <kbd>Esc</kbd> 暂停</span><span><kbd>R</kbd> 重新开始</span></div><p class="guide-note">触屏：左下摇杆驾驶，拖动油门条加减速。此游戏采用简化飞行模型，用于娱乐。</p><button id="guide-ok" class="button primary" type="button">准备好了</button></dialog>
+  <div id="error" class="error" role="alert" hidden></div>
+</main>
+<script type="module" src="./game.js"></script>
+</body>
+</html>
